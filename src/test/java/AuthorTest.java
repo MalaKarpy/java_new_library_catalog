@@ -63,19 +63,19 @@ public class AuthorTest {
     assertTrue(Author.all().get(0).equals(myFirstAuthor));
   }
 
-  @Test
-  public void getBooks_returnsAllBooks_List() {
-    Book myBook = new Book("math");
-    myBook.save();
-
-    Author myAuthor = new Author("You");
-    myAuthor.save();
-    
-    myAuthor.addBook(myBook);
-    List savedBooks = myAuthor.getBooks();
-    assertEquals(savedBooks.size(), 1);
-
-  }
+  // @Test
+  // public void getBooks_returnsAllBooks_List() {
+  //   Book myBook = new Book("math");
+  //   myBook.save();
+  //
+  //   Author myAuthor = new Author("You");
+  //   myAuthor.save();
+  //
+  //   myAuthor.addBook(myBook);
+  //   List savedBooks = myAuthor.getBooks();
+  //   assertEquals(savedBooks.size(), 1);
+  //
+  // }
 
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Book {
   private int id;
   private String title;
+  private String book_isbn;
 
 
   public int getId() {
@@ -16,8 +17,9 @@ public class Book {
   }
 
 
-  public Book(String title) {
+  public Book(String title, String bookIsbn) {
     this.title = title;
+    this.book_isbn = bookIsbn;
 
   }
 
@@ -41,9 +43,10 @@ public class Book {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO books (title) VALUES (:title)";
+      String sql = "INSERT INTO books (title, book_isbn ) VALUES (:title,:book_isbn)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("title", title)
+        .addParameter("book_isbn", book_isbn)
         .executeUpdate()
         .getKey();
     }
@@ -101,4 +104,27 @@ public class Book {
     }
 
   }
+
+  public void makeCopies(int noOfCopies) {
+    //String copyNum = this.boo;
+    for (int i=1; i <= noOfCopies; i++) {
+      String copyIsbn = book_isbn + "c" + i;
+      //String copyName = "newCopy"+i;
+      Copy newCopy = new Copy(copyIsbn, this.id);
+      newCopy.save();//concatenation not sure
+    }
+  }
+
+  public List<Copy> getCopies() {
+    try(Connection con = DB.sql2o.open()) {
+
+      String sql = "SELECT * FROM copies where book_id = :id";
+      List<Copy> copies = con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Copy.class);
+        return copies;
+    }
+  }
+
+
 }
