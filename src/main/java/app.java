@@ -17,30 +17,29 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    /* Index --> Categories*/
-    // get("/categories", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   List<Category> categories = Category.all();
-    //   model.put("categories", categories);
-    //   model.put("template", "templates/categories.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+    get("/books", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      List<Book> books = Book.all();
+      model.put("books", books);
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/books", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String title = request.queryParams("title");
+      String bookIsbn = request.queryParams("bookIsbn");
+      Book newBook = new Book(title,bookIsbn);
+      newBook.save();
+      response.redirect("/books");
+      return null;
+    });
     //
-    // /* Category list/form --> POST a new category */
-    // post("/categories", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   String name = request.queryParams("name");
-    //   Category newCategory = new Category(name);
-    //   newCategory.save();
-    //   response.redirect("/categories");
-    //   return null;
-    // });
-    //
-    // /* Category list/form --> See a particular category */
-    // get("/categories/:id", (request,response) ->{
+    // /* Book list/form --> See a particular category */
+    // get("/books/:id", (request,response) ->{
     //   HashMap<String, Object> model = new HashMap<String, Object>();
     //   int id = Integer.parseInt(request.params(":id"));
-    //   Category category = Category.find(id);
+    //   Book category = Book.find(id);
     //   model.put("category", category);
     //   model.put("allTasks", Task.all());
     //   model.put("template", "templates/category.vtl");
@@ -68,14 +67,14 @@ public class App {
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
     //
-    // /* Category page --> POST a task to this category */
+    // /* Book page --> POST a task to this category */
     // post("/add_tasks", (request, response) -> {
     //   int taskId = Integer.parseInt(request.queryParams("task_id"));
     //   int categoryId = Integer.parseInt(request.queryParams("category_id"));
-    //   Category category = Category.find(categoryId);
+    //   Book category = Book.find(categoryId);
     //   Task task = Task.find(taskId);
     //   category.addTask(task);
-    //   response.redirect("/categories/" + categoryId);
+    //   response.redirect("/books/" + categoryId);
     //   return null;
     // });
     //
@@ -84,7 +83,7 @@ public class App {
     //   int id = Integer.parseInt(request.params(":id"));
     //   Task task = Task.find(id);
     //   model.put("task", task);
-    //   model.put("allCategories", Category.all());
+    //   model.put("allCategories", Book.all());
     //   model.put("template", "templates/task.vtl");
     //   return new ModelAndView(model, layout);
     // }, new VelocityTemplateEngine());
@@ -92,12 +91,12 @@ public class App {
     //
     //
     // /* Task page --> POST a category to this task */
-    // post("/add_categories", (request, response) -> {
+    // post("/add_books", (request, response) -> {
     //   int taskId = Integer.parseInt(request.queryParams("task_id"));
     //   int categoryId = Integer.parseInt(request.queryParams("category_id"));
-    //   Category category = Category.find(categoryId);
+    //   Book category = Book.find(categoryId);
     //   Task task = Task.find(taskId);
-    //   task.addCategory(category);
+    //   task.addBook(category);
     //   response.redirect("/tasks/" + taskId);
     //   return null;
     // });

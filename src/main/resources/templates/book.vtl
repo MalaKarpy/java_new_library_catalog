@@ -1,0 +1,41 @@
+<h1>$book.getTitle()</h1>
+
+#if($book.getAuthors())
+  <p>Here are the authors for this book:</p>
+  <ul>
+    #foreach($author in $book.getAuthors())
+      <li>$author.getName()</li>
+    #end
+  </ul>
+#end
+
+Here are the Copies for this Book:
+
+<ul>
+  #foreach($copy in $book.getCopies())
+    <li>$author.getName()</li>
+  #end
+</ul>
+
+<h4>Add a Author for this book:</h4>
+
+<!-- it's a POST method, so we can read the task's id using queryParams -->
+<form action='/add_authors' method='post'>
+    <input id="book_id" name="book_id" type="hidden" value="$book.getId()">
+    <label for="author_id">Select a author</label>
+    <!-- select creates a dropdown menu -->
+    <select id='author_id' name='author_id' type='text'>
+      #foreach($author in $allAuthors)
+        <!-- option sends the task id along with it to the book -->
+        <option value="$author.getId()"> $author.getName() </option>
+      #end
+    </select>
+    <label for="numCopies">Number Of Copies</label>
+    <input id="numCopies" name="numCopies" type="text">
+
+    <button type='submit'>Add author</button>
+</form>
+
+<p><a href="/book/$book.getId()/edit">Edit this book</a></p>
+
+<p><a href='/'>Home</a></p>
