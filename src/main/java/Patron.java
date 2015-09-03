@@ -88,25 +88,27 @@ public class Patron {
     }
   }
 
-  public void addBook(Book book) {
+  public void checkOutCopies(Copy copy) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO checkouts (book_id, patron_id) VALUES (:book_id, :patron_id)";
+      String sql = "INSERT INTO checkouts (copy_id, patron_id) VALUES (:copy_id, :patron_id)";
       con.createQuery(sql)
-      .addParameter("book_id", book.getId())
+      .addParameter("copy_id", copy.getId())
       .addParameter("patron_id", this.getId())
       .executeUpdate();
     }
   }
 
-  public List<Book> getBooks() {
+  public List<Copy> getCopies() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM patrons JOIN checkouts ON (checkouts.patron_id = patrons.id) JOIN books ON (checkouts.book_id = books.id) WHERE patron_id = :patron_id";
-      List<Book> books = con.createQuery(sql)
-      .addParameter("patron_id", this.getId())
-      .executeAndFetch(Book.class);
-      return books;
+      String sql = "SELECT Copies.* FROM patrons JOIN checkouts ON (checkouts.patron_id = patrons.id) JOIN copies ON (checkouts.copy_id = copies.id) WHERE patron_id = :patron_id";
+      List<Copy> copies = con.createQuery(sql)
+      .addParameter("copy_id", this.getId())
+      .executeAndFetch(Copy.class);
+      return copies;
 
     }
-
   }
+
+
+
 }

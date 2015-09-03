@@ -76,6 +76,18 @@ public class Copy {
     }
   }
 
+  public static List<Copy> availableCopies(int copy_id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM copies where id != :copy_id";
+      List<Copy> copies = con.createQuery(sql)
+      .addParameter("copy_id", copy_id)
+      .executeAndFetch(Copy.class);
+      return copies;
+    }
+
+
+  }
+
   // public void addAuthor(Author author) {
   //   try(Connection con = DB.sql2o.open()) {
   //     String sql = "INSERT INTO copies_authors (author_id, book_id) VALUES (:author_id, :book_id)";

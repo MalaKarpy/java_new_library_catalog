@@ -62,19 +62,47 @@ public class PatronTest {
     assertTrue(Patron.all().get(0).equals(myFirstPatron));
   }
 
-  // @Test
-  // public void getBook_returnsAllBooks_List() {
-  //   Patron myPatron = new Patron("Alex", "333");
-  //   myPatron.save();
-  //
-  //   Book myBook = new Book("Jack");
-  //   myBook.save();
-  //
-  //   myPatron.addBook(myBook);
-  //   List savedBooks = myPatron.getBooks();
-  //   assertEquals(savedBooks.size(), 1);
-  //
-  // }
+  @Test
+  public void getBook_returnsAllBooks_List() {
+    Patron myPatron = new Patron("Alex", "333");
+    myPatron.save();
+
+    Author myFirstAuthor = new Author("Bert");
+    myFirstAuthor.save();
+
+    Book myBook = new Book("Math","MTH12");
+    myBook.save();
+    myBook.addAuthor(myFirstAuthor);
+
+    myBook.makeCopies(2);
+    List<Copy> copies = myBook.getCopies();
+    myPatron.checkOutCopies(copies.get(0));
+    List<Copy> availableCopies = Copy.availableCopies(copies.get(0).getId());
+    assertEquals(availableCopies.size(), 1);
+
+  }
+
+  @Test
+  public void availableCopiesChecking() {
+    Patron myPatron = new Patron("Alex", "333");
+    myPatron.save();
+
+    Author myFirstAuthor = new Author("Bert");
+    myFirstAuthor.save();
+
+    Book myBook = new Book("Math","MTH12");
+    myBook.save();
+    myBook.addAuthor(myFirstAuthor);
+
+    myBook.makeCopies(2);
+    List<Copy> copies = myBook.getCopies();
+    myPatron.checkOutCopies(copies.get(0));
+    List<Copy> availableCopies = Copy.availableCopies(copies.get(0).getId());
+    assertEquals(availableCopies.get(0).getCopyIsbn(), "MTH12c2");
+
+  }
+
+
 
 
 }
